@@ -20,10 +20,11 @@ class Tarifa(object):
         Constructor
         Dado un monto para los dias de semana y los fines de semana, creamos objeto tarifa.
         '''
+        assert(semana>=0 and finde>=0)
         self.tasa_semanal = semana
         self.tasa_finsemana = finde
     def semanal(self):
-        #Obtener precio en días de semana comunes..
+        #Obtener precio en dias de semana comunes..
         return self.tasa_semanal
     def finsemana(self):
         #Obtener precio del fin de semana.
@@ -31,13 +32,13 @@ class Tarifa(object):
    
 
 def calcularPrecio(tarifa, tiempoDeServicio):
-    #Función que, dado un objeto tarifa y un arreglo con dos objetos de tipo datetime,
+    #Funcion que, dado un objeto tarifa y un arreglo con dos objetos de tipo datetime,
     #da el monto del costo total de un servicio.
     #datetime(year, month, day, hour=0, minute=0, second=0, microsecond=0)
     #timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
     difTiempo = tiempoDeServicio[1] - tiempoDeServicio[0]
-    assert(difTiempo.days > 0 or difTiempo.seconds >= 900) # Tiempo mínimo
-    assert(difTiempo.days <= 7) # Tiempo máximo
+    assert(difTiempo.days > 0 or difTiempo.seconds >= 900) # Tiempo minimo
+    assert(difTiempo.days < 7) # Tiempo maximo
     assert(tiempoDeServicio[1] > tiempoDeServicio[0]) # Formato correcto el intervalo
     tiempo = tiempoDeServicio[0]
     monto = 0
