@@ -20,6 +20,7 @@ class Tarifa(object):
         Constructor
         Dado un monto para los dias de semana y los fines de semana, creamos objeto tarifa.
         '''
+        assert(semana>=0 and finde>=0)
         self.tasa_semanal = semana
         self.tasa_finsemana = finde
     def semanal(self):

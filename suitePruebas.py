@@ -5,6 +5,7 @@ Created on Jan 26, 2017
 '''
 import unittest
 import datetime
+import sys
 from calcularPrecio import *
 
 class TestServicio(unittest.TestCase):
@@ -87,8 +88,58 @@ class TestServicio(unittest.TestCase):
         monto = calcularPrecio(tarifa, tiempoDeServicio)
         self.assertEqual(monto,5,"Fallo en la prueba test15MinutesRange")
         
-    
-
+    def testMonthChange(self):
+        # Prueba sobre un rango de fechas, donde ocurre un cambio de mes
+        fecha1 = datetime.datetime(2017,2,28,16,0,0)
+        fecha2 = datetime.datetime(2017,3,2,16,0,0)
+        tarifa = Tarifa(5.0,6.0)
+        tiempoDeServicio = [fecha1,fecha2]
+        monto = calcularPrecio(tarifa, tiempoDeServicio)
+        self.assertEqual(monto,240,"Fallo en la prueba testMonthChange")
+        
+    def testCompleteHour(self):
+        # Prueba sobre el requerimiento de cobro de hora completa, es decir,
+        # para 1 hora + 1 minuto, se cobran como si fuesen 2 horas.
+        fecha1 = datetime.datetime(2017,1,10,0,0,0)
+        fecha2 = datetime.datetime(2017,1,10,12,1,0)
+        tarifa = Tarifa(5.0,6.0)
+        tiempoDeServicio = [fecha1,fecha2]
+        monto = calcularPrecio(tarifa, tiempoDeServicio)
+        self.assertEqual(monto,65,"Fallo en la prueba testCompleteHour")
+        
+    ''' Pruebas para la verificacion de los calculos con tasas
+    de tarifa variadas 
+    '''
+        
+    def testCalcDecDec(self):
+        # Prueba sobre el calculo del servicio, usando numeros
+        # decimales para ambas tasas
+        fecha1 = datetime.datetime(2017,1,13,12,0,0)
+        fecha2 = datetime.datetime(2017,1,16,12,0,0)
+        tarifa = Tarifa(12.45,4.88)
+        tiempoDeServicio = [fecha1,fecha2]
+        monto = calcularPrecio(tarifa, tiempoDeServicio)
+        self.assertAlmostEqual(monto,533.04,7,"Fallo en la prueba testCalcDecDec")
+        
+    def testCalcZero(self):
+        # Prueba para el caso borde, ambas tarifas son cero (0)
+        fecha1 = datetime.datetime(2017,1,13,12,0,0)
+        fecha2 = datetime.datetime(2017,1,16,12,0,0)
+        tarifa = Tarifa(0,0)
+        tiempoDeServicio = [fecha1,fecha2]
+        monto = calcularPrecio(tarifa, tiempoDeServicio)
+        self.assertEqual(monto,0,"Fallo en la prueba testCalcZeroZero")
+        
+    def testCalcMaxFloat(self):
+        # Prueba para el caso borde, ambas tarifas son el maximo
+        # numero punto flotante representable por Python
+        fecha1 = datetime.datetime(2017,1,13,12,0,0)
+        fecha2 = datetime.datetime(2017,1,16,12,0,0)
+        tarifa = Tarifa(sys.float_info.max,sys.float_info.max)
+        tiempoDeServicio = [fecha1,fecha2]
+        monto = calcularPrecio(tarifa, tiempoDeServicio)
+        self.assertEqual(monto,(24*sys.float_info.max)+(48*sys.float_info.max),"Fallo en la prueba testCalcMaxFloat")
+        
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
