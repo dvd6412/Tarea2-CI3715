@@ -37,7 +37,7 @@ def calcularPrecio(tarifa, tiempoDeServicio):
     #timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
     difTiempo = tiempoDeServicio[1] - tiempoDeServicio[0]
     assert(difTiempo.days > 0 or difTiempo.seconds >= 900) # Tiempo minimo
-    assert(difTiempo.days <= 7) # Tiempo maximo
+    assert(difTiempo.days < 7) # Tiempo maximo
     assert(tiempoDeServicio[1] > tiempoDeServicio[0]) # Formato correcto el intervalo
     tiempo = tiempoDeServicio[0]
     monto = 0

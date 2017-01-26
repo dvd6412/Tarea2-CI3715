@@ -72,7 +72,7 @@ class TestServicio(unittest.TestCase):
     def test7DaysRange(self):
         # Prueba para el caso borde, donde el servicio es exactamente de 7 dias
         fecha1 = datetime.datetime(2017,5,15,0,0,0)
-        fecha2 = datetime.datetime(2017,5,22,0,0,0)
+        fecha2 = datetime.datetime(2017,5,21,23,59,0)
         tarifa = Tarifa(5.0,6.0)
         tiempoDeServicio = [fecha1,fecha2]
         monto = calcularPrecio(tarifa, tiempoDeServicio)
